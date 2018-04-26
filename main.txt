@@ -1,0 +1,83 @@
+data:text/html;charset=utf-8, 
+<head> 
+	<link href="http://www.advela.net/wp-content/uploads/2017/01/cropped-favicon-300x300.png" rel="shortcut icon"> 
+	<title>Carson Text</title> 
+</head> 
+
+<style> 
+body{background:#263238;color:#333;margin:0%20auto;width:50rem} 
+textarea{background:#fbfbfb;border:0;color:#333;font-family:sans-serif;font-size:2rem;height:98%;line-height:1.4;margin:0%20auto;outline:0;padding:4rem;width:100%;resize:none;} 
+button{background-color:#fbfbfb;border:1px%20#ccc%20solid;color:#6b6b6b;cursor:pointer;float:right;margin:10px%200;padding:5px%2010px}@media%20(max-width:768px) { body{width:100%;padding:0} textarea{padding:10px} button{float:none} } 
+
+</style> 
+
+<iframe id="my_iframe" style="display:none;"></iframe> 
+
+<body> <form onsubmit="download(this['name'].value, this['text'].value)"> 
+	<button onclick="email()" type="button">Email</button> 
+	<button onclick="location.href='https://calendar.google.com'" type="button">Calendar</button> 
+	<button onclick="getSelText()" type="button">Search%20Selected</button> 
+	<button onclick="getBullet()" title="Alt+B" type="button">Bullet</button> 
+	<button id = "1" onclick="countSel(1)" type="button">Count%20Characters</button> 
+	<button onclick="getCalculate()" title="Alt+C" type="button">Calculate</button> 
+	<button type="submit" value="Download">Save</button> 
+	<textarea contenteditable id=TE name=text spellcheck=false placeholder=Write... autofocus></textarea> 
+	<input type="text" name="name" value="NoteOut.txt" hidden> 
+</form> 
+
+<script language=javascript> 
+
+document.onkeyup = function(e) { 
+if (e.which == 77) { } 
+else if (e.altKey && e.which == 67) { 
+getCalculate(); } else if (e.altKey && e.which == 66) { 
+getBullet() } }; 
+
+function getSelText() { var text = ""; 
+text = window.getSelection().toString(); 
+window.open("http://www.google.com/search?q="+ text);
+ } 
+
+function countSel(button_id) { 
+	var box = document.getElementById(button_id).firstChild, text = "", count = 0; 
+text = window.getSelection().toString(); count = text.length; 
+box.data = count == 0 ? "Count Characters" : count + " (reset)"; 
+} 
+
+function getCalculate() { 
+	var text = "",calculate = "", count = 0, box = document.getElementById("TE"); 
+	    var endPos = box.selectionStart;
+	    var startPos = endPos;
+	    var i = endPos;
+	if (window.getSelection().toString() == "" ){ 
+		while (startPos >= endPos && i != 0){
+			startPos = box.value.lastIndexOf("\n", endPos-1);
+			i--;
+		}
+		if (startPos == -1){startPos = 0;}
+		text = box.value.substr(startPos, endPos);
+	 } 
+	else { text = window.getSelection().toString();
+	 } calculate = eval(text); 
+	document.getElementById("TE").value += "\n" + text + "=" + calculate + "\n" + calculate; 
+} 
+function download(filename, text) { 
+	var element = document.createElement('a'); textToWrite = text.replace(/\n/g, "\r\n"); 
+	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(textToWrite)); 
+	element.setAttribute('download', filename); 
+	element.style.display = 'none'; 
+	document.body.appendChild(element); element.click(); 
+	document.body.removeChild(element); } 
+
+function email() { 
+	var text = ""; 
+	text = document.getElementById("TE").value; 
+	textToWrite = encodeURIComponent(text); 
+	window.open("https://mail.google.com/mail/u/0/?view=cm&fs=1&su=Notes&tf=1&body=" + textToWrite); 
+} 
+
+function getBullet() { 
+var text = "",calculate = "", count = 0, box = document.getElementById("TE"); text = window.getSelection().toString(); 
+calculate = eval(text); 
+document.getElementById("TE").value += "%E2%80%A2" ; 
+} </script>
