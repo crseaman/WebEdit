@@ -1,6 +1,5 @@
 data:text/html;charset=utf-8, 
 <head> 
-	<link href="http://www.advela.net/wp-content/uploads/2017/01/cropped-favicon-300x300.png" rel="shortcut icon"> 
 	<title>Carson Text</title> 
 </head> 
 
